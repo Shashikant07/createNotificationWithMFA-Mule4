@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension-documentation>
+    <configs>
+        <config name="config">
+            <description><![CDATA[Default configuration]]></description>
+            <parameters>
+                <parameter name="clientID">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="clientSecret">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="envId">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="expirationPolicy">
+                    <description><![CDATA[Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit.]]></description>
+                </parameter>
+            </parameters>
+        </config>
+    </configs>
+    <connections/>
+    <extension name="cloudHubMFA">
+        <description><![CDATA[]]></description>
+        <parameters/>
+    </extension>
+    <operations>
+        <operation name="CreateNotificationWithMFA">
+            <description><![CDATA[]]></description>
+            <parameters>
+                <parameter name="Message">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="Domain">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="transactionId">
+                    <description><![CDATA[]]></description>
+                </parameter>
+                <parameter name="priority">
+                    <description><![CDATA[]]></description>
+                </parameter>
+            </parameters>
+        </operation>
+    </operations>
+    <sources/>
+    <types/>
+</extension-documentation>
