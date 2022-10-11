@@ -27,8 +27,8 @@ public class CustomOperations {
 	
 	@MediaType(value = ANY,strict = false)
 	@Alias("CreateNotificationWithMFA")
-	public void postCloudhubToken(@Config CustomConfiguration c,@ParameterGroup(name="cloudhub Notification Details") CustomParameter p) throws ClientProtocolException, IOException, CustomExceptions {
-		LOGGER.info("Started token retrieving process.........");
+	public void getCloudhubToken(@Config CustomConfiguration c,@ParameterGroup(name="cloudhub Notification Details") CustomParameter p) throws ClientProtocolException, IOException, CustomExceptions {
+		LOGGER.debug("Started token retrieving process.........");
 		String response = null;
 		String Protocol = "https://";
 		String host = "anypoint.mulesoft.com";
@@ -36,29 +36,30 @@ public class CustomOperations {
 		String payload  = "client_id=" + c.getClientID() +"&" + "client_secret=" + c.getClientSecret() +"&"+"grant_type=client_credentials";
 		String envId = c.getEnvId();
 		
-		//Function call for retrieving token
+		/*Method call for retrieving token*/
 		response = getToken(Protocol, host, Path, payload);
 		
-		//Converting the retreived roken into Json
+		/*Converting the retrieved token into Json*/
 		JSONObject jsonObj = new JSONObject(response);
-		LOGGER.info("Token retrieved successfully.........");
+		LOGGER.debug("Token retrieved successfully.........");
 		
-		//preparing the token for headers.
+		/*preparing the token for headers.*/
 		String token = "Bearer " + jsonObj.getString("access_token").toString();
 		
+		/*building the Json-string*/
 		String JsonString = "{" + "\"domain\"" + ":" + "\""+p.getDomain() +"\","
 				 + "\"message\"" + ":"  + "\"" + p.getMessage().replace("\n", "\\n") + "\"" + ","
 						+ "\"priority\" :" + "\"" +p.getPriority() + "\"," + "\"transactionId\" :" + "\"" + p.getTransactionId() +"\""+ " } ";
 		
-		//generating alerts on cloudHub
+		/*Method call for creating alerts on cloudHub*/
 			AlertCreationOnCloudHub(token,envId,JsonString);	
 		
 				
 	}
 	
-	
+	/*Method for generating Alerts on cloudHub*/
 	private void AlertCreationOnCloudHub (String token,String envId,String JsonString) throws ClientProtocolException, IOException, CustomExceptions{
-		LOGGER.info("Started alert creation process to cloudHub");
+		LOGGER.debug("Started alert creation process to cloudHub");
 		String Protocol = "https://";
 	    String host = "anypoint.mulesoft.com";
 	    String path = "/cloudhub/api/notifications";
@@ -80,9 +81,9 @@ public class CustomOperations {
 			    }
 			
 		
-		LOGGER.info("Successfully generated the alert on cloudHub");
+		LOGGER.debug("Successfully generated the alert on cloudHub");
 	    }
-	
+	/*Method for getting access_token*/
 	private String getToken(String Protocol,String host,String Path,String payload) throws IOException, CustomExceptions {
 		String response = null;
 		
@@ -109,7 +110,7 @@ public class CustomOperations {
 		return response;
 	}
 	
-	
+	/*Method for building response*/
 	private String getHttpResponse(URLConnection con) throws UnsupportedEncodingException, IOException{
 		  StringBuilder response = null;
 		  try(BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"utf-8"))){
@@ -124,14 +125,14 @@ public class CustomOperations {
 
 }
 
-//Error handling 
+/*Exception handling*/ 
 @SuppressWarnings("serial")
 class CustomExceptions  extends Exception
 {
 
 	public CustomExceptions (String str)
   {
-      // calling the constructor of parent Exception
+      /*calling the constructor of parent Exception*/
       super(str);
   }
 }
